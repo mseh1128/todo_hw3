@@ -1,18 +1,18 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/auth';
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
 
 // THIS IS USED TO INITIALIZE THE firebase OBJECT
-// PUT YOUR FIREBASE PROJECT CONFIG STUFF HERE
+// Your web app's Firebase configuration
 var firebaseConfig = {
-    apiKey: "AIzaSyCJxkqx-6PMJrZ7ACkrgbO55b5wmJdop1Y",
-    authDomain: "todo-rrf-316.firebaseapp.com",
-    databaseURL: "https://todo-rrf-316.firebaseio.com",
-    projectId: "todo-rrf-316",
-    storageBucket: "todo-rrf-316.appspot.com",
-    messagingSenderId: "892398996038",
-    appId: "1:892398996038:web:1fb9157fc6c5d266e01847",
-    measurementId: "G-TEGQB3MZ23"
+  apiKey: "AIzaSyCR6rGGtaxA-nXF1DBysn9kX93v6bmPWUU",
+  authDomain: "todo-rrf-316-95894.firebaseapp.com",
+  databaseURL: "https://todo-rrf-316-95894.firebaseio.com",
+  projectId: "todo-rrf-316-95894",
+  storageBucket: "todo-rrf-316-95894.appspot.com",
+  messagingSenderId: "219298792370",
+  appId: "1:219298792370:web:77205a9753c0406f22daab",
+  measurementId: "G-CBENGZVRTB"
 };
 firebase.initializeApp(firebaseConfig);
 
