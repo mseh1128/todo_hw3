@@ -1,28 +1,28 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { firebaseConnect } from 'react-redux-firebase';
-import { compose } from 'redux';
-import { Redirect } from 'react-router-dom';
-import { registerHandler } from '../../store/database/asynchHandler'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { firebaseConnect } from "react-redux-firebase";
+import { compose } from "redux";
+import { Redirect } from "react-router-dom";
+import { registerHandler } from "../../store/database/asynchHandler";
 
 class RegisterScreen extends Component {
   state = {
-    email: '',
-    password: '',
-    firstName: '',
-    lastName: '',
-  }
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: ""
+  };
 
-  handleChange = (e) => {
+  handleChange = e => {
     const { target } = e;
 
     this.setState(state => ({
       ...state,
-      [target.id]: target.value,
+      [target.id]: target.value
     }));
-  }
+  };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
 
     const { props, state } = this;
@@ -30,7 +30,7 @@ class RegisterScreen extends Component {
     const newUser = { ...state };
 
     props.register(newUser, firebase);
-  }
+  };
 
   render() {
     const { auth, authError } = this.props;
@@ -44,23 +44,49 @@ class RegisterScreen extends Component {
           <h5 className="grey-text text-darken-3">Register</h5>
           <div className="input-field">
             <label htmlFor="email">Email</label>
-            <input type="email" name="email" id="email" onChange={this.handleChange} />
+            <input
+              type="email"
+              name="email"
+              id="email"
+              onChange={this.handleChange}
+            />
           </div>
           <div className="input-field">
             <label htmlFor="password">Password</label>
-            <input type="password" name="password" id="password" onChange={this.handleChange} />
+            <input
+              type="password"
+              name="password"
+              id="password"
+              onChange={this.handleChange}
+            />
           </div>
           <div className="input-field">
             <label htmlFor="firstName">First Name</label>
-            <input type="text" name="firstName" id="firstName" onChange={this.handleChange} />
+            <input
+              type="text"
+              name="firstName"
+              id="firstName"
+              onChange={this.handleChange}
+            />
           </div>
           <div className="input-field">
             <label htmlFor="lastName">Last Name</label>
-            <input type="text" name="lastName" id="lastName" onChange={this.handleChange} />
+            <input
+              type="text"
+              name="lastName"
+              id="lastName"
+              onChange={this.handleChange}
+            />
           </div>
           <div className="input-field">
-            <button type="submit" className="btn pink lighten-1 z-depth-0">Sign Up</button>
-            {authError ? <div className="red-text center"><p>{authError}</p></div> : null}
+            <button type="submit" className="btn pink lighten-1 z-depth-0">
+              Sign Up
+            </button>
+            {authError ? (
+              <div className="red-text center">
+                <p>{authError}</p>
+              </div>
+            ) : null}
           </div>
         </form>
       </div>
@@ -70,14 +96,14 @@ class RegisterScreen extends Component {
 
 const mapStateToProps = state => ({
   auth: state.firebase.auth,
-  authError: state.auth.authError,
+  authError: state.auth.authError
 });
 
 const mapDispatchToProps = dispatch => ({
-  register: (newUser, firebase) => dispatch(registerHandler(newUser, firebase)),
+  register: (newUser, firebase) => dispatch(registerHandler(newUser, firebase))
 });
 
 export default compose(
   firebaseConnect(),
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps)
 )(RegisterScreen);
