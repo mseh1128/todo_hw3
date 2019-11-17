@@ -7,8 +7,7 @@ import TodoListCard from "./TodoListCard";
 class TodoListLinks extends React.Component {
   render() {
     console.log("IN TODOLIST LINKS");
-    let todoLists = this.props.todoLists;
-    if (todoLists) todoLists.sort(sortingFunction);
+    const { todoLists } = this.props;
 
     return (
       <div className="todo-lists section">
@@ -23,26 +22,8 @@ class TodoListLinks extends React.Component {
   }
 }
 
-const sortingFunction = (a, b) => {
-  const firstSortVarA = a.lastModified.seconds;
-  const firstSortVarB = b.lastModified.seconds;
-  const secondSortVarA = a.lastModified.nanoseconds;
-  const secondSortVarB = b.lastModified.nanoseconds;
-
-  const winner =
-    firstSortVarA < firstSortVarB
-      ? 1
-      : firstSortVarA === firstSortVarB
-      ? secondSortVarA < secondSortVarB
-        ? 1
-        : -1
-      : -1;
-  return winner;
-};
-
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   // console.log("Todolist screen state is: ");
-  // console.log(state);
   return {
     todoLists: state.firestore.ordered.todoLists,
     auth: state.firebase.auth

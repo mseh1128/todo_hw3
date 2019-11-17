@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { updateTodoList } from "../../store/database/asynchHandler";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { compose } from "redux";
@@ -13,16 +14,17 @@ class ListScreen extends Component {
 
   handleChange = e => {
     const { target } = e;
-
-    this.setState(state => ({
-      ...state,
-      [target.id]: target.value
-    }));
+    console.log(this.state);
+    this.props.updateTodoList(this.state);
+    // this.setState(state => ({
+    //   ...state,
+    //   [target.id]: target.value
+    // }));
   };
 
   render() {
     const auth = this.props.auth;
-    const todoList = this.props.todoList;
+    const { todoList } = this.props;
     if (!auth.uid) {
       return <Redirect to="/" />;
     }
@@ -58,9 +60,8 @@ class ListScreen extends Component {
   }
 }
 
-const updateTimestamp = () => {};
-
 const mapStateToProps = (state, ownProps) => {
+  console.log("MAP STATE TO PROPS CALLED IN LISTSCREEN");
   const { id } = ownProps.match.params;
   const { todoLists } = state.firestore.data;
   const todoList = todoLists ? todoLists[id] : null;
@@ -72,7 +73,16 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    updateTodoList: (todoList, docID) =>
+      dispatch(updateTodoList(todoList, docID))
+  };
+};
+
 export default compose(
-  connect(mapStateToProps),
-  firestoreConnect([{ collection: "todoLists" }])
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect([
+    { collection: "todoLists", orderBy: ["lastModified", "desc"] }
+  ])
 )(ListScreen);

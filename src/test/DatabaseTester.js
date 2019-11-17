@@ -33,7 +33,7 @@ class DatabaseTester extends React.Component {
           name: todoListJson.name,
           owner: todoListJson.owner,
           items: todoListJson.items,
-          lastModified: fireStore.Timestamp.fromDate(new Date())
+          lastModified: fireStore.Timestamp.now()
         })
         .then(() => {
           console.log("DATABASE RESET");

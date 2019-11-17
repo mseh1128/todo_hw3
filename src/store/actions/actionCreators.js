@@ -11,6 +11,7 @@ export const REGISTER_ERROR = "REGISTER_ERROR";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+export const UPDATE_TODO_LIST = "UPDATE_TODO_LIST";
 
 // THESE CREATORS MAKE ACTIONS ASSOCIATED WITH USER ACCOUNTS
 
@@ -42,5 +43,12 @@ export function createTodoListError(error) {
   return {
     type: "CREATE_TODO_LIST_ERROR",
     error
+  };
+}
+
+export function updateTodoList(todoList) {
+  return {
+    type: "UPDATE_TODO_LIST",
+    todoList
   };
 }
