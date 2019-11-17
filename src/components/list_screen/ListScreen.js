@@ -15,16 +15,17 @@ class ListScreen extends Component {
   handleChange = e => {
     const { target } = e;
     const { id } = this.props.todoList;
-    this.setState(state => ({
-      ...state,
-      [target.id]: target.value
-    }));
-    console.log("NEW STATE: ");
-    console.log(this.state);
-    this.props.updateTodoList(this.state, id);
+    this.setState(
+      {
+        [target.id]: target.value
+      },
+      () => this.props.updateTodoList(this.state, id)
+    );
   };
 
   render() {
+    console.log("State in render is: ");
+    console.log(this.state);
     const auth = this.props.auth;
     const { todoList } = this.props;
     const { name, owner } = this.state;
