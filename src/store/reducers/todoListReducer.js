@@ -9,12 +9,10 @@ const todoListReducer = (state = initState, action) => {
   switch (action.type) {
     case actionCreators.UPDATE_TODO_LIST:
       console.log("Updated todolist successfully");
-      return {
-        ...state,
-        todoList: action.todoList
-      };
+      return state;
     case actionCreators.CREATE_TODO_LIST:
-      console.log("Created todolist successfully");
+      console.log("Created todolist successfully with");
+      console.log(action.todoList);
       return {
         ...state,
         todoList: action.todoList

@@ -8,24 +8,26 @@ import { firestoreConnect } from "react-redux-firebase";
 
 class ListScreen extends Component {
   state = {
-    name: "",
-    owner: ""
+    name: this.props.todoList.name,
+    owner: this.props.todoList.owner
   };
 
   handleChange = e => {
     const { target } = e;
     const { id } = this.props.todoList;
-    console.log(this.state);
     this.setState(state => ({
       ...state,
       [target.id]: target.value
     }));
+    console.log("NEW STATE: ");
+    console.log(this.state);
     this.props.updateTodoList(this.state, id);
   };
 
   render() {
     const auth = this.props.auth;
     const { todoList } = this.props;
+    const { name, owner } = this.state;
     if (!auth.uid) {
       return <Redirect to="/" />;
     }
@@ -41,7 +43,7 @@ class ListScreen extends Component {
             name="name"
             id="name"
             onChange={this.handleChange}
-            value={todoList.name}
+            value={name}
           />
         </div>
         <div className="input-field">
@@ -52,7 +54,7 @@ class ListScreen extends Component {
             name="owner"
             id="owner"
             onChange={this.handleChange}
-            value={todoList.owner}
+            value={owner}
           />
         </div>
         <ItemsList todoList={todoList} />
