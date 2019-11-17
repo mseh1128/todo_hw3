@@ -1,28 +1,30 @@
 import * as actionCreators from "../actions/actionCreators";
 
 const initState = {
-  todoList: []
+  todoList: [],
+  error: ""
 };
 
 const todoListReducer = (state = initState, action) => {
   switch (action.type) {
-    case actionCreators.CREATE_TODO_LIST:
+    case actionCreators.UPDATE_TODO_LIST:
+      console.log("Updated todolist successfully");
       return {
         ...state,
         todoList: action.todoList
       };
-    // case actionCreators.CREATE_TODO_LIST:
-    //   return {
-    //     ...state,
-    //     todoList: action.todoList
-    //   };
-    // case actionCreators.CREATE_TODO_LIST_ERROR:
-    //   return {
-    //     ...state,
-    //     todoList: todoLists
-    //   };
-    /* IF YOU HAVE ANY TODO LIST EDITING REDUCERS ADD THEM HERE */
-
+    case actionCreators.CREATE_TODO_LIST:
+      console.log("Created todolist successfully");
+      return {
+        ...state,
+        todoList: action.todoList
+      };
+    case actionCreators.CREATE_TODO_LIST_ERROR:
+      console.log("Error in creating todolist");
+      return {
+        ...state,
+        error: action.error
+      };
     default:
       return state;
   }

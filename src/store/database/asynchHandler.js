@@ -37,7 +37,7 @@ export const updateTodoList = (todoList, docID) => (
     .collection("todoLists")
     .doc(docID)
     .update(todoList)
-    .then(() => dispatch(actionCreators.updateTodoList()));
+    .then(ref => dispatch(actionCreators.updateTodoList(ref)));
 };
 
 export const loginHandler = ({ credentials, firebase }) => (
