@@ -6,6 +6,11 @@ const initState = {
 
 const todoListReducer = (state = initState, action) => {
   switch (action.type) {
+    case actionCreators.CREATE_TODO_LIST:
+      return {
+        ...state,
+        todoList: action.todoList
+      };
     // case actionCreators.CREATE_TODO_LIST:
     //   return {
     //     ...state,
@@ -20,7 +25,6 @@ const todoListReducer = (state = initState, action) => {
 
     default:
       return state;
-      break;
   }
 };
 
