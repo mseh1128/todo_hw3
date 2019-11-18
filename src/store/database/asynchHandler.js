@@ -22,6 +22,66 @@ export const createTodoListHandler = () => (
     });
 };
 
+export const removeItemHandler = (todoList, index) => (
+  dispatch,
+  getState,
+  { getFirestore }
+) => {
+  console.log("IN REMOVE ITEM HANDLER");
+  console.log("TODOLIST IS: ");
+  console.log(todoList);
+  console.log("INDEX TO REMOVE IS: ");
+  console.log(index);
+  const fireStore = getFirestore();
+  const docID = todoList.id;
+  todoList.items.splice(index, 1);
+  // const tItem = todoList.items.splice(tIndex, 1)[0];
+  // todoList.items.splice(tIndex - 1, 0, tItem);
+  console.log(todoList);
+  fireStore
+    .collection("todoLists")
+    .doc(docID)
+    .update({ items: todoList.items })
+    .catch(err => console.log(err));
+};
+
+export const moveItemUpHandler = (todoList, index) => (
+  dispatch,
+  getState,
+  { getFirestore }
+) => {
+  if (index !== 0) {
+    const fireStore = getFirestore();
+    const docID = todoList.id;
+    const tItem = todoList.items.splice(index, 1)[0];
+    todoList.items.splice(index - 1, 0, tItem);
+    fireStore
+      .collection("todoLists")
+      .doc(docID)
+      .update({ items: todoList.items })
+      .catch(err => console.log(err));
+  }
+};
+
+export const moveItemDownHandler = (todoList, index) => (
+  dispatch,
+  getState,
+  { getFirestore }
+) => {
+  const todoListLength = todoList.items.length;
+  if (index !== todoListLength - 1) {
+    const fireStore = getFirestore();
+    const docID = todoList.id;
+    const tItem = todoList.items.splice(index, 1)[0];
+    todoList.items.splice(index + 1, 0, tItem);
+    fireStore
+      .collection("todoLists")
+      .doc(docID)
+      .update({ items: todoList.items })
+      .catch(err => console.log(err));
+  }
+};
+
 export const updateTodoList = (todoList, docID) => (
   dispatch,
   getState,

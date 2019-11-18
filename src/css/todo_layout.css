@@ -30,21 +30,112 @@ form {
   margin-top: 60px;
 }
 
-form button, form h5 {
+form button,
+form h5 {
   margin: 20px 0;
 }
 
-input[type=text]:not(.browser-default):focus:not([readonly]),
-input[type=email]:not(.browser-default):focus:not([readonly]),
-input[type=password]:not(.browser-default):focus:not([readonly]),
-textarea.materialize-textarea:focus:not([readonly]){
+input[type="text"]:not(.browser-default):focus:not([readonly]),
+input[type="email"]:not(.browser-default):focus:not([readonly]),
+input[type="password"]:not(.browser-default):focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]) {
   border-color: #ec407a;
   box-shadow: none;
 }
 
-input[type=text]:not(.browser-default):focus:not([readonly]) + label,
+input[type="text"]:not(.browser-default):focus:not([readonly]) + label,
 textarea.materialize-textarea:focus:not([readonly]) + label,
-input[type=email]:not(.browser-default):focus:not([readonly]) + label,
-input[type=password]:not(.browser-default):focus:not([readonly]) + label{
+input[type="email"]:not(.browser-default):focus:not([readonly]) + label,
+input[type="password"]:not(.browser-default):focus:not([readonly]) + label {
   color: #ec407a !important;
+}
+
+.card-wrapper {
+  display: flex;
+}
+
+.new_item_div_container {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+
+.list_item_card,
+.list_item_add_card,
+.list_item_header_card,
+.list_item_create_new_item_container {
+  position: relative;
+  height: 50px;
+  grid-row-gap: 0px;
+  grid-column-gap: 50px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.list_item_card_description {
+  font-weight: bold;
+  font-size: 14pt;
+}
+
+.list_item_card_description {
+  position: absolute;
+  left: 2%;
+}
+
+.list_item_card_assigned_to,
+.list_item_card_due_date,
+.list_item_card_completed,
+.list_item_card_not_completed {
+  font-weight: normal;
+  font-size: 12pt;
+}
+
+.list_item_task_header,
+.list_item_card_assigned_to {
+  left: 2%;
+}
+
+.list_item_card_assigned_to,
+.list_item_card_due_date,
+.list_item_card_completed,
+.list_item_card_not_completed {
+  position: absolute;
+  top: 50%;
+}
+
+.list_item_status_header,
+.list_item_card_completed,
+.list_item_card_not_completed {
+  left: 60%;
+}
+
+.list_item_card_completed {
+  color: green;
+}
+
+.list_item_card_pending {
+  color: red;
+}
+
+.list_item_due_date_header,
+.list_item_card_due_date {
+  left: 35%;
+}
+
+strong {
+  font-weight: bold;
+}
+
+.fixed-action-btn {
+  position: relative;
+  right: 20px;
+  bottom: 0px;
+}
+
+.btn-floating {
+  width: 50px;
+  height: 50px;
+  padding: 0px;
+  margin-bottom: 10px;
 }
