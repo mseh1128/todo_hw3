@@ -1,4 +1,5 @@
 import * as actionCreators from "../actions/actionCreators.js";
+import { sortTasksHeader } from "../../utils/index";
 
 export const createTodoListHandler = () => (
   dispatch,
@@ -98,6 +99,12 @@ export const sortByCriteriaHandler = (todoList, criteriaName) => (
   if (!sortCriteriaName || sortCriteriaName !== criteriaName) {
     todoList.sortCriteriaName = criteriaName;
     todoList.sortCriteriaAsc = true;
+    const todoListItems = todoList.items;
+    console.log("todoList items before: ");
+    console.log(todoListItems);
+    sortTasksHeader(todoList.items, criteriaName, true);
+    console.log("todoList items after: ");
+    console.log(todoListItems);
     fireStore
       .collection("todoLists")
       .doc(id)
@@ -106,6 +113,12 @@ export const sortByCriteriaHandler = (todoList, criteriaName) => (
   } else {
     // if same then just reverse sortCriteriaAsc
     todoList.sortCriteriaAsc = !todoList.sortCriteriaAsc;
+    const todoListItems = todoList.items;
+    console.log("todoList items before: ");
+    console.log(todoListItems);
+    sortTasksHeader(todoList.items, criteriaName, todoList.sortCriteriaAsc);
+    console.log("todoList items after: ");
+    console.log(todoListItems);
     fireStore
       .collection("todoLists")
       .doc(id)
