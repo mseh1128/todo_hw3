@@ -179,3 +179,36 @@ strong {
   display: flex;
   justify-content: space-around;
 }
+
+#todo_home,
+#todo_list,
+#todo_item,
+#edit_item_container {
+  background-color: var(--swatch-primary);
+}
+
+#edit_item_container,
+.item_prompts {
+  font-weight: bold;
+}
+
+.item_form_values_container {
+  display: grid;
+  grid-template-columns: 1fr 7fr;
+}
+
+.item_field_container {
+  display: flex;
+  align-items: center;
+}
+
+.item_field_container input {
+  width: 100%;
+  height: 1.75em;
+}
+
+#item_completed_container input {
+  border-radius: 0.4em;
+  font-size: 1.15em;
+  background-color: #f0f0f0;
+}

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Icon, Button } from "react-materialize";
 
 class ItemCard extends React.Component {
@@ -30,14 +31,18 @@ class ItemCard extends React.Component {
     const completedDiv = completed ? <div>Completed</div> : <div>Pending</div>;
     return (
       <div className="new_item_div_container">
-        <div className="list_item_card">
+        <Link
+          to={"/todoList/" + todoList.id + "/" + id}
+          key={todoList.id}
+          className="list_item_card"
+        >
           <div className="list_item_card_description">{description}</div>
           <div class="list_item_card_assigned_to">
             Assigned To: <strong>{assigned_to}</strong>
           </div>
           <div className="list_item_card_due_date">{due_date}</div>
           <div className="list_item_card_completed">{completedDiv}</div>
-        </div>
+        </Link>
         <div className="list_item_btn_container">
           <Button floating fab={{ direction: "left" }} className="red" large>
             <Button
