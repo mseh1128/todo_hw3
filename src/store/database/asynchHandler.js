@@ -10,8 +10,8 @@ export const createTodoListHandler = () => (
   fireStore
     .collection("todoLists")
     .add({
-      name: "Unknown",
-      owner: "Unknown",
+      name: "",
+      owner: "",
       items: [],
       lastModified: fireStore.Timestamp.now(),
       sortCriteriaName: null,
@@ -143,6 +143,22 @@ export const updateTodoList = (todoList, docID) => (
     .doc(docID)
     .update(todoList)
     .then(() => dispatch(actionCreators.updateTodoList()));
+};
+
+export const updateTodoItemHandler = (newTodoList, cb) => (
+  dispatch,
+  getState,
+  { getFirestore }
+) => {
+  console.log(newTodoList);
+  const fireStore = getFirestore();
+  const docID = newTodoList.id;
+  fireStore
+    .collection("todoLists")
+    .doc(docID)
+    .update(newTodoList)
+    .then(() => (cb ? cb() : null))
+    .catch(err => console.log(err));
 };
 
 export const loginHandler = ({ credentials, firebase }) => (

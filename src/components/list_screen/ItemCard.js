@@ -28,7 +28,11 @@ class ItemCard extends React.Component {
     // completed = true
     // description = "CSE 114"
     // due_date = "2018-12-31" (String)
-    const completedDiv = completed ? <div>Completed</div> : <div>Pending</div>;
+    const completedDiv = completed ? (
+      <div className="list_item_card_completed">Completed</div>
+    ) : (
+      <div className="list_item_card_pending ">Pending</div>
+    );
     return (
       <div className="new_item_div_container">
         <Link
@@ -36,12 +40,17 @@ class ItemCard extends React.Component {
           key={todoList.id}
           className="list_item_card"
         >
-          <div className="list_item_card_description">{description}</div>
-          <div class="list_item_card_assigned_to">
-            Assigned To: <strong>{assigned_to}</strong>
+          <div className="list_item_card_description">
+            {description ? description : "Unknown"}
           </div>
-          <div className="list_item_card_due_date">{due_date}</div>
-          <div className="list_item_card_completed">{completedDiv}</div>
+          <div class="list_item_card_assigned_to">
+            Assigned To:{" "}
+            <strong>{assigned_to ? assigned_to : "Unknown"}</strong>
+          </div>
+          <div className="list_item_card_due_date">
+            {due_date ? due_date : "Unknown"}
+          </div>
+          {completedDiv}
         </Link>
         <div className="list_item_btn_container">
           <Button floating fab={{ direction: "left" }} className="red" large>

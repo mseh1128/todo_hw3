@@ -1,36 +1,66 @@
 import React, { Component } from "react";
-import { updateTodoList } from "../../store/database/asynchHandler";
+import { Link } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import ItemsList from "./ItemsList.js";
 import { firestoreConnect } from "react-redux-firebase";
-import { Icon, Button } from "react-materialize";
-import { sortByCriteriaHandler } from "../../store/database/asynchHandler";
+import { updateTodoItemHandler } from "../../store/database/asynchHandler";
 import { Checkbox } from "react-materialize";
 
 class EditItem extends Component {
+  state = {
+    description: this.props.item.description,
+    assigned_to: this.props.item.assigned_to,
+    due_date: this.props.item.due_date,
+    completed: this.props.item.completed
+  };
+
+  initialTodoList = this.props.todoList;
+
   handleChange = e => {
-    // const { target } = e;
+    const { target } = e;
+    const name = target.type === "checkbox" ? target.value : target.name;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    let { todoList, item } = this.props;
+    console.log("The value is: ");
+    console.log(value);
+    console.log(typeof value);
+    console.log(name);
+    item[name] = value;
+    this.setState(
+      {
+        [name]: value
+      },
+      () => this.props.updateTodoItem(todoList)
+    );
+  };
+
+  callbackFunction = () => {
+    const { id } = this.props.todoList;
+    this.props.history.push("/todoList/" + id);
+  };
+
+  removeDatabaseChanges = () => {
+    this.props.updateTodoItem(
+      this.initialTodoList,
+      this.callbackFunction.bind(this)
+    );
+    // console.log("REACHED HERE");
     // const { id } = this.props.todoList;
-    // const { sortByCriteria } = this.props;
-    // this.setState(
-    //   {
-    //     [target.id]: target.value
-    //   },
-    //   () => this.props.updateTodoList(this.state, id)
-    // );
+    // this.props.history.push("/todoList/" + id);
+    // return <Redirect to={"/todoList/" + id} />;
   };
 
   render() {
     const auth = this.props.auth;
-    const { item } = this.props;
+    // const { item } = this.props;
+    const { description, assigned_to, due_date, completed } = this.state;
+    const { id } = this.props.todoList;
 
     if (!auth.uid) {
       return <Redirect to="/" />;
     }
     // console.log(item);
-    // const { todoList } = this.props;
     // const { name, owner } = this.state;
     // const { sortByCriteria } = this.props;
     return (
@@ -49,7 +79,7 @@ class EditItem extends Component {
                 type="text"
                 id="item_description_textfield"
                 name="description"
-                value={item.description}
+                value={description}
                 onChange={this.handleChange}
               />
             </div>
@@ -66,7 +96,7 @@ class EditItem extends Component {
                 type="text"
                 id="item_assigned_to_textfield"
                 name="assigned_to"
-                value={item.assigned_to}
+                value={assigned_to}
                 onChange={this.handleChange}
               />
             </div>
@@ -83,7 +113,7 @@ class EditItem extends Component {
                 type="date"
                 id="item_due_date_picker"
                 name="due_date"
-                value={item.due_date}
+                value={due_date}
                 onChange={this.handleChange}
               />
             </div>
@@ -95,28 +125,37 @@ class EditItem extends Component {
             <p className="item_prompts" id="item_completed_prompt">
               Completed:
             </p>
-            <div id="checkbox_field_container" className="item_field_container">
-              {item.completed ? (
-                <Checkbox value="completed" checked />
+            <div
+              name="completed"
+              id="checkbox_field_container"
+              className="item_field_container"
+            >
+              {completed ? (
+                <Checkbox
+                  value="completed"
+                  onChange={this.handleChange}
+                  checked
+                />
               ) : (
-                <Checkbox value="completed" />
+                <Checkbox value="completed" onChange={this.handleChange} />
               )}
             </div>
           </div>
           <div id="item_completed_container">
-            <input
-              type="submit"
-              id="item_form_submit_button"
-              value="Submit"
-              name="submit"
-              onClick={() => console.log("submit button was clicked!")}
-            />
+            <Link to={"/todoList/" + id}>
+              <input
+                type="submit"
+                id="item_form_submit_button"
+                value="Submit"
+                name="Submit"
+              />
+            </Link>
             <input
               type="submit"
               id="item_form_cancel_button"
               value="Cancel"
               name="cancel"
-              onClick={() => console.log("cancel button was clicked!")}
+              onClick={() => this.removeDatabaseChanges()}
             />
           </div>
         </div>
@@ -145,7 +184,10 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  updateTodoItem: (newTodoList, cb) =>
+    dispatch(updateTodoItemHandler(newTodoList, cb))
+});
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

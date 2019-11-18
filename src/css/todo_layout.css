@@ -99,7 +99,7 @@ input[type="password"]:not(.browser-default):focus:not([readonly]) + label {
 .list_item_card_assigned_to,
 .list_item_card_due_date,
 .list_item_card_completed,
-.list_item_card_not_completed {
+.list_item_card_pending {
   font-weight: normal;
   font-size: 12pt;
 }
@@ -112,14 +112,14 @@ input[type="password"]:not(.browser-default):focus:not([readonly]) + label {
 .list_item_card_assigned_to,
 .list_item_card_due_date,
 .list_item_card_completed,
-.list_item_card_not_completed {
+.list_item_card_pending {
   position: absolute;
   top: 50%;
 }
 
 .list_item_status_header,
 .list_item_card_completed,
-.list_item_card_not_completed {
+.list_item_card_pending {
   left: 60%;
 }
 
