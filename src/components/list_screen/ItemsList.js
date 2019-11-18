@@ -9,7 +9,17 @@ import { moveItemUpHandler } from "../../store/database/asynchHandler";
 
 class ItemsList extends React.Component {
   getItemsArr(todoList, items) {
+    console.log("Current context is: ");
+    console.log(this);
     const { removeItems, moveItemUp, moveItemDown } = this.props;
+    const { sortCriteriaName, sortCriteriaAsc } = this.props.todoList;
+    console.log("GETSITEMSARR: CRITERIA NAME IS " + sortCriteriaName);
+    console.log("GETSITEMSARR: CRITERIA ASC IS " + sortCriteriaAsc);
+
+    if (sortCriteriaName && sortCriteriaAsc !== null) {
+      console.log("GETSITEMSARR: GOING TO SORT ITEMS NOW");
+      this.sortTasksHeader(items, sortCriteriaName, sortCriteriaAsc);
+    }
     if (items) {
       const arrLength = items.length;
       return items.map(function(item, index) {
@@ -35,6 +45,66 @@ class ItemsList extends React.Component {
       return null;
     }
   }
+
+  sortTasksHeader = (itemsToSort, sortType, ascending) => {
+    console.log("IN SORT TASKS HEADER: ");
+    console.log("IN SORT TASKS HEADER: ITEMSTOSORT");
+    console.log(itemsToSort);
+    console.log("IN SORT TASKS HEADER: SORT TYPE");
+    console.log(sortType);
+    console.log("IN SORT TASKS HEADER: ASCENDING");
+    console.log(ascending);
+    if (sortType === "task") {
+      if (ascending) {
+        itemsToSort.sort((a, b) => this.taskSortComparator(a, b));
+      } else {
+        itemsToSort.sort((a, b) => this.taskSortComparator(a, b)).reverse();
+      }
+    } else if (sortType === "due_date") {
+      if (ascending) {
+        itemsToSort.sort((a, b) => this.dueDateSortComparator(a, b));
+      } else {
+        itemsToSort.sort((a, b) => this.dueDateSortComparator(a, b)).reverse();
+      }
+    } else {
+      // status
+      if (ascending) {
+        itemsToSort.sort((a, b) => this.statusSortComparator(a, b));
+      } else {
+        itemsToSort.sort((a, b) => this.statusSortComparator(a, b)).reverse();
+      }
+    }
+  };
+
+  taskSortComparator = (a, b) => {
+    if (a.description > b.description) {
+      return -1;
+    }
+    if (b.description > a.description) {
+      return 1;
+    }
+    return 0;
+  };
+
+  dueDateSortComparator = (a, b) => {
+    if (new Date(a.due_date) > new Date(b.due_date)) {
+      return -1;
+    }
+    if (new Date(b.due_date) > new Date(a.due_date)) {
+      return 1;
+    }
+    return 0;
+  };
+
+  statusSortComparator = (a, b) => {
+    if (a.completed > b.completed) {
+      return -1;
+    }
+    if (b.completed > a.completed) {
+      return 1;
+    }
+    return 0;
+  };
 
   render() {
     const todoList = this.props.todoList;

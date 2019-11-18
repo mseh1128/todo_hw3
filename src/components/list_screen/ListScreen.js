@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import ItemsList from "./ItemsList.js";
 import { firestoreConnect } from "react-redux-firebase";
+import { Icon, Button } from "react-materialize";
+import { sortByCriteriaHandler } from "../../store/database/asynchHandler";
 
 class ListScreen extends Component {
   state = {
@@ -15,6 +17,7 @@ class ListScreen extends Component {
   handleChange = e => {
     const { target } = e;
     const { id } = this.props.todoList;
+    const { sortByCriteria } = this.props;
     this.setState(
       {
         [target.id]: target.value
@@ -29,6 +32,7 @@ class ListScreen extends Component {
     const auth = this.props.auth;
     const { todoList } = this.props;
     const { name, owner } = this.state;
+    const { sortByCriteria } = this.props;
     if (!auth.uid) {
       return <Redirect to="/" />;
     }
@@ -58,7 +62,35 @@ class ListScreen extends Component {
             value={owner}
           />
         </div>
-        <ItemsList todoList={todoList} />
+        <div id="list_item_container">
+          <div class="list_item_header_card">
+            <div
+              class="list_item_task_header"
+              onClick={() => sortByCriteria(todoList, "task")}
+            >
+              Task
+            </div>
+            <div
+              class="list_item_due_date_header"
+              onClick={() => sortByCriteria(todoList, "due_date")}
+            >
+              Due Date
+            </div>
+            <div
+              class="list_item_status_header"
+              onClick={() => sortByCriteria(todoList, "status")}
+            >
+              Status
+            </div>
+          </div>
+          <ItemsList todoList={todoList} />
+        </div>
+        <div
+          class="list_item_create_new_item_container"
+          onClick={() => console.log("I WAS FINALLY CLICKED")}
+        >
+          <Button icon={<Icon>add</Icon>} />
+        </div>
       </div>
     );
   }
@@ -77,12 +109,12 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    updateTodoList: (todoList, docID) =>
-      dispatch(updateTodoList(todoList, docID))
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  updateTodoList: (todoList, docID) =>
+    dispatch(updateTodoList(todoList, docID)),
+  sortByCriteria: (todoList, criteriaName) =>
+    dispatch(sortByCriteriaHandler(todoList, criteriaName))
+});
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

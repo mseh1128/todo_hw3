@@ -12,7 +12,9 @@ export const createTodoListHandler = () => (
       name: "Unknown",
       owner: "Unknown",
       items: [],
-      lastModified: fireStore.Timestamp.now()
+      lastModified: fireStore.Timestamp.now(),
+      sortCriteriaName: null,
+      sortCriteriaAsc: null
     })
     .then(ref => {
       dispatch(actionCreators.createTodoList(ref));
@@ -78,6 +80,36 @@ export const moveItemDownHandler = (todoList, index) => (
       .collection("todoLists")
       .doc(docID)
       .update({ items: todoList.items })
+      .catch(err => console.log(err));
+  }
+};
+
+export const sortByCriteriaHandler = (todoList, criteriaName) => (
+  dispatch,
+  getState,
+  { getFirestore }
+) => {
+  //   if sortCriteriaName is null or different:
+  // If so then set sortCriteriaName & sortCriteriaAsc to true (asc)
+  console.log("CRITERIA HANDLER: IN HERE");
+  const { sortCriteriaName, id } = todoList;
+  const fireStore = getFirestore();
+
+  if (!sortCriteriaName || sortCriteriaName !== criteriaName) {
+    todoList.sortCriteriaName = criteriaName;
+    todoList.sortCriteriaAsc = true;
+    fireStore
+      .collection("todoLists")
+      .doc(id)
+      .update(todoList)
+      .catch(err => console.log(err));
+  } else {
+    // if same then just reverse sortCriteriaAsc
+    todoList.sortCriteriaAsc = !todoList.sortCriteriaAsc;
+    fireStore
+      .collection("todoLists")
+      .doc(id)
+      .update(todoList)
       .catch(err => console.log(err));
   }
 };
