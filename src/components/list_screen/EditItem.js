@@ -35,7 +35,7 @@ class EditItem extends Component {
     );
   };
 
-  callbackFunction = () => {
+  goBackToTodolist = () => {
     const { id } = this.props.todoList;
     this.props.history.push("/todoList/" + id);
   };
@@ -43,7 +43,7 @@ class EditItem extends Component {
   removeDatabaseChanges = () => {
     this.props.updateTodoItem(
       this.initialTodoList,
-      this.callbackFunction.bind(this)
+      this.goBackToTodolist.bind(this)
     );
     // console.log("REACHED HERE");
     // const { id } = this.props.todoList;

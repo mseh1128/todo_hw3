@@ -1,7 +1,7 @@
 import * as actionCreators from "../actions/actionCreators.js";
 import { sortTasksHeader } from "../../utils/index";
 
-export const createTodoListHandler = () => (
+export const createTodoListHandler = cb => (
   dispatch,
   getState,
   { getFirestore }
@@ -18,11 +18,26 @@ export const createTodoListHandler = () => (
       sortCriteriaAsc: null
     })
     .then(ref => {
-      dispatch(actionCreators.createTodoList(ref));
+      cb(ref.id);
     })
     .catch(err => {
       dispatch(actionCreators.createTodoListError(err));
     });
+};
+
+export const removeTodoListHandler = (todoList, cb) => (
+  dispatch,
+  getState,
+  { getFirestore }
+) => {
+  const { id } = todoList;
+  const fireStore = getFirestore();
+  fireStore
+    .collection("todoLists")
+    .doc(id)
+    .delete()
+    .then(() => cb())
+    .catch(err => console.log(err));
 };
 
 export const removeItemHandler = (todoList, index) => (
@@ -137,27 +152,27 @@ export const updateTodoList = (todoList, docID) => (
   console.log(todoList);
   console.log("DOC ID IS");
   console.log(docID);
-  const { name, owner } = todoList;
   fireStore
     .collection("todoLists")
     .doc(docID)
     .update(todoList)
-    .then(() => dispatch(actionCreators.updateTodoList()));
+    // .then(() => (cb ? cb() : null));
+    .catch(err => console.log(err));
 };
 
-export const updateTodoItemHandler = (newTodoList, cb) => (
+export const updateTodoItemHandler = (newTodoList, cb, newItemID) => (
   dispatch,
   getState,
   { getFirestore }
 ) => {
-  console.log(newTodoList);
+  console.log(newItemID);
   const fireStore = getFirestore();
   const docID = newTodoList.id;
   fireStore
     .collection("todoLists")
     .doc(docID)
     .update(newTodoList)
-    .then(() => (cb ? cb() : null))
+    .then(() => (cb ? (newItemID !== null ? cb(newItemID) : cb()) : null))
     .catch(err => console.log(err));
 };
 

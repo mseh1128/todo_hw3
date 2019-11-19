@@ -5,13 +5,17 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import ItemsList from "./ItemsList.js";
 import { firestoreConnect } from "react-redux-firebase";
-import { Icon, Button } from "react-materialize";
-import { sortByCriteriaHandler } from "../../store/database/asynchHandler";
+import { Icon, Button, Modal } from "react-materialize";
+import {
+  updateTodoItemHandler,
+  sortByCriteriaHandler,
+  removeTodoListHandler
+} from "../../store/database/asynchHandler";
 
 class ListScreen extends Component {
   state = {
-    name: this.props.todoList.name,
-    owner: this.props.todoList.owner
+    name: this.props.todoList ? this.props.todoList.name : null,
+    owner: this.props.todoList ? this.props.todoList.owner : null
   };
 
   handleChange = e => {
@@ -26,20 +30,90 @@ class ListScreen extends Component {
     );
   };
 
+  goToEditPage = editPageID => {
+    const { id } = this.props.todoList;
+    this.props.history.push("/todoList/" + id + "/" + editPageID);
+  };
+
+  getLargestKey = () => {
+    return Math.max.apply(
+      Math,
+      this.props.todoList.items.map(function(o) {
+        return o.key;
+      })
+    );
+  };
+
+  createNewItem = () => {
+    let newItemKey = 0;
+    if (this.props.todoList.items.length !== 0)
+      newItemKey = this.getLargestKey() + 1;
+    const newItem = {
+      key: newItemKey,
+      id: newItemKey,
+      description: "",
+      due_date: "",
+      assigned_to: "",
+      completed: false
+    };
+    this.props.todoList.items.push(newItem);
+    this.props.updateTodoItem(
+      this.props.todoList,
+      this.goToEditPage.bind(this),
+      newItemKey
+    );
+  };
+
+  goToHomePage = () => {
+    this.props.history.push("/");
+  };
+
   render() {
     console.log("State in render is: ");
     console.log(this.state);
     const auth = this.props.auth;
-    const { todoList } = this.props;
+    const { todoList, removeTodoList } = this.props;
+    const { goToHomePage } = this;
     const { name, owner } = this.state;
     const { sortByCriteria } = this.props;
     if (!auth.uid) {
       return <Redirect to="/" />;
     }
 
+    if (!todoList) return <React.Fragment />;
+
     return (
       <div className="container white">
-        <h5 className="grey-text text-darken-3">Todo List</h5>
+        <div className="list-header">
+          <h5 className="grey-text text-darken-3">Todo List</h5>
+
+          <Modal
+            header="Delete this list?"
+            trigger={
+              <Button
+                icon={<Icon>delete</Icon>}
+                onClick={() => console.log("DO SOMETHING")}
+                className="modal-button"
+              />
+            }
+          >
+            <p id="delete_confirm_text">
+              Are you sure you want to delete this list?
+            </p>
+            <div id="yes_no_btns">
+              <button
+                id="yes_modal_button"
+                onClick={() => removeTodoList(todoList, goToHomePage)}
+              >
+                Yes
+              </button>
+              <button id="no_modal_button" className="modal-close">
+                No
+              </button>
+            </div>
+            <p id="delete_warning">The list will not be retrievable.</p>
+          </Modal>
+        </div>
         <div className="input-field">
           <label htmlFor="email">Name</label>
           <input
@@ -87,7 +161,7 @@ class ListScreen extends Component {
         </div>
         <div
           class="list_item_create_new_item_container"
-          onClick={() => console.log("I WAS FINALLY CLICKED")}
+          onClick={this.createNewItem}
         >
           <Button icon={<Icon>add</Icon>} />
         </div>
@@ -101,7 +175,7 @@ const mapStateToProps = (state, ownProps) => {
   const { id } = ownProps.match.params;
   const { todoLists } = state.firestore.data;
   const todoList = todoLists ? todoLists[id] : null;
-  todoList.id = id;
+  if (todoList) todoList.id = id;
 
   return {
     todoList,
@@ -113,7 +187,11 @@ const mapDispatchToProps = dispatch => ({
   updateTodoList: (todoList, docID) =>
     dispatch(updateTodoList(todoList, docID)),
   sortByCriteria: (todoList, criteriaName) =>
-    dispatch(sortByCriteriaHandler(todoList, criteriaName))
+    dispatch(sortByCriteriaHandler(todoList, criteriaName)),
+  updateTodoItem: (newTodoList, cb, newItemID) =>
+    dispatch(updateTodoItemHandler(newTodoList, cb, newItemID)),
+  removeTodoList: (todoList, cb) =>
+    dispatch(removeTodoListHandler(todoList, cb))
 });
 
 export default compose(

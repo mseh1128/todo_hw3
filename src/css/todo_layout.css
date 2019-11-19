@@ -212,3 +212,18 @@ strong {
   font-size: 1.15em;
   background-color: #f0f0f0;
 }
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px 0px 10px;
+}
+
+.modal-button {
+  position: relative;
+  top: 15px;
+}
+
+#delete_confirm_text {
+  font-weight: bold;
+}

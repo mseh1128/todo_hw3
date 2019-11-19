@@ -10,10 +10,14 @@ import { createTodoListHandler } from "../../store/database/asynchHandler";
 
 class HomeScreen extends Component {
   handleNewList = () => {
-    this.props.createNewList();
+    this.props.createNewList(this.goToListScreen);
     // console.log(`The todolist id is ${todolistID}`);
     // create a new todo list
     // create new todolist, get its id & then do Link w/ its id
+  };
+
+  goToListScreen = todoListID => {
+    this.props.history.push("/todoList/" + todoListID);
   };
 
   render() {
@@ -59,7 +63,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  createNewList: () => dispatch(createTodoListHandler())
+  createNewList: cb => dispatch(createTodoListHandler(cb))
 });
 
 export default compose(
