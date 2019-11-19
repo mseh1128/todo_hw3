@@ -9,8 +9,7 @@ class ItemCard extends React.Component {
       description,
       completed,
       due_date,
-      id,
-      key
+      id
     } = this.props.item;
     const {
       todoList,

@@ -42,7 +42,6 @@ class ItemsList extends React.Component {
   render() {
     const todoList = this.props.todoList;
     const items = todoList.items;
-    const { removeItems } = this.props;
     console.log("ItemsList: todoList.id " + todoList.id);
     const itemArray = items ? this.getItemsArr(todoList, items) : null;
     console.log(itemArray);

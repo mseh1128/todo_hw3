@@ -21,7 +21,6 @@ class ListScreen extends Component {
   handleChange = e => {
     const { target } = e;
     const { id } = this.props.todoList;
-    const { sortByCriteria } = this.props;
     this.setState(
       {
         [target.id]: target.value
