@@ -11,6 +11,7 @@ import {
   sortByCriteriaHandler,
   removeTodoListHandler
 } from "../../store/database/asynchHandler";
+import { getFirestore } from "redux-firestore";
 
 class ListScreen extends Component {
   state = {
@@ -28,6 +29,14 @@ class ListScreen extends Component {
       () => this.props.updateTodoList(this.state, id)
     );
   };
+
+  componentDidMount() {
+    const fireStore = getFirestore();
+    const { id } = this.props.todoList;
+    this.props.updateTodoList({ lastModified: fireStore.Timestamp.now() }, id);
+    console.log("Component did mount!");
+    console.log(this.state);
+  }
 
   goToEditPage = editPageID => {
     const { id } = this.props.todoList;
